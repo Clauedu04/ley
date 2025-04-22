@@ -2,7 +2,7 @@ import streamlit as st
 
 R = 0.0821  # L·atm/(mol·K)
 
-st.title("Calculadora de Gases Ideales")
+st.title("Calculadora de leyes empiricas")
 
 ley = st.selectbox("Selecciona una ley para resolver", [
     "Ecuación Universal de los Gases Ideales",
