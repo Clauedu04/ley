@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.image("boy-science-gown-holding-beakers.zip")
 R = 0.0821  # L·atm/(mol·K)
 
 st.title("Calculadora de leyes empiricas")
