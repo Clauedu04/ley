@@ -1,45 +1,71 @@
 import streamlit as st
 
-st.title("Calculadora de Gases - Ley Combinada de Boyle y Mariotte (moles constantes)")
-st.markdown("**Fórmula usada:** (P₁V₁) / T₁ = (P₂V₂) / T₂")
-st.markdown("**Unidades:** atm, L, K")
+R = 0.0821  # L·atm/(mol·K)
 
-# Opción a calcular
-opcion = st.selectbox(
-    "¿Qué variable deseas calcular?",
-    ["Presión final (P₂)", "Volumen final (V₂)", "Temperatura final (T₂)"]
-)
+st.title("Calculadora de Gases Ideales")
 
-# Ingreso de variables
-if opcion == "Presión final (P₂)":
-    P1 = st.number_input("Presión inicial P₁ (atm)", min_value=0.01)
-    V1 = st.number_input("Volumen inicial V₁ (L)", min_value=0.01)
-    T1 = st.number_input("Temperatura inicial T₁ (K)", min_value=0.01)
-    V2 = st.number_input("Volumen final V₂ (L)", min_value=0.01)
-    T2 = st.number_input("Temperatura final T₂ (K)", min_value=0.01)
+ley = st.selectbox("Selecciona una ley para resolver", [
+    "Ecuación Universal de los Gases Ideales",
+    "Ley de Boyle y Mariotte",
+    "Ley de Charles",
+    "Ley de Gay-Lussac"
+])
 
-    if st.button("Calcular P₂"):
-        P2 = (P1 * V1 * T2) / (V2 * T1)
-        st.success(f"Presión final P₂ = {P2:.3f} atm")
+if ley == "Ecuación Universal de los Gases Ideales":
+    opcion = st.radio("¿Qué variable deseas calcular?", ["Presión (P)", "Volumen (V)", "Temperatura (T)", "Número de moles (n)"])
 
-elif opcion == "Volumen final (V₂)":
-    P1 = st.number_input("Presión inicial P₁ (atm)", min_value=0.01)
-    V1 = st.number_input("Volumen inicial V₁ (L)", min_value=0.01)
-    T1 = st.number_input("Temperatura inicial T₁ (K)", min_value=0.01)
-    P2 = st.number_input("Presión final P₂ (atm)", min_value=0.01)
-    T2 = st.number_input("Temperatura final T₂ (K)", min_value=0.01)
+    if opcion == "Presión (P)":
+        V = st.number_input("Volumen (L)", min_value=0.01)
+        T = st.number_input("Temperatura (K)", min_value=0.01)
+        n = st.number_input("Número de moles (mol)", min_value=0.01)
+        if st.button("Calcular Presión"):
+            P = (n * R * T) / V
+            st.success(f"Presión = {P:.3f} atm")
 
-    if st.button("Calcular V₂"):
-        V2 = (P1 * V1 * T2) / (P2 * T1)
-        st.success(f"Volumen final V₂ = {V2:.3f} L")
+    elif opcion == "Volumen (V)":
+        P = st.number_input("Presión (atm)", min_value=0.01)
+        T = st.number_input("Temperatura (K)", min_value=0.01)
+        n = st.number_input("Número de moles (mol)", min_value=0.01)
+        if st.button("Calcular Volumen"):
+            V = (n * R * T) / P
+            st.success(f"Volumen = {V:.3f} L")
 
-elif opcion == "Temperatura final (T₂)":
-    P1 = st.number_input("Presión inicial P₁ (atm)", min_value=0.01)
-    V1 = st.number_input("Volumen inicial V₁ (L)", min_value=0.01)
-    T1 = st.number_input("Temperatura inicial T₁ (K)", min_value=0.01)
-    P2 = st.number_input("Presión final P₂ (atm)", min_value=0.01)
-    V2 = st.number_input("Volumen final V₂ (L)", min_value=0.01)
+    elif opcion == "Temperatura (T)":
+        P = st.number_input("Presión (atm)", min_value=0.01)
+        V = st.number_input("Volumen (L)", min_value=0.01)
+        n = st.number_input("Número de moles (mol)", min_value=0.01)
+        if st.button("Calcular Temperatura"):
+            T = (P * V) / (n * R)
+            st.success(f"Temperatura = {T:.3f} K")
 
-    if st.button("Calcular T₂"):
-        T2 = (P2 * V2 * T1) / (P1 * V1)
-        st.success(f"Temperatura final T₂ = {T2:.3f} K")
+    elif opcion == "Número de moles (n)":
+        P = st.number_input("Presión (atm)", min_value=0.01)
+        V = st.number_input("Volumen (L)", min_value=0.01)
+        T = st.number_input("Temperatura (K)", min_value=0.01)
+        if st.button("Calcular Número de moles"):
+            n = (P * V) / (R * T)
+            st.success(f"Número de moles = {n:.3f} mol")
+
+elif ley == "Ley de Boyle y Mariotte":
+    P1 = st.number_input("Presión inicial (P1, atm)", min_value=0.01)
+    V1 = st.number_input("Volumen inicial (V1, L)", min_value=0.01)
+    V2 = st.number_input("Volumen final (V2, L)", min_value=0.01)
+    if st.button("Calcular Presión final (P2)"):
+        P2 = (P1 * V1) / V2
+        st.success(f"Presión final P2 = {P2:.3f} atm")
+
+elif ley == "Ley de Charles":
+    V1 = st.number_input("Volumen inicial (V1, L)", min_value=0.01)
+    T1 = st.number_input("Temperatura inicial (T1, K)", min_value=0.01)
+    T2 = st.number_input("Temperatura final (T2, K)", min_value=0.01)
+    if st.button("Calcular Volumen final (V2)"):
+        V2 = (V1 * T2) / T1
+        st.success(f"Volumen final V2 = {V2:.3f} L")
+
+elif ley == "Ley de Gay-Lussac":
+    P1 = st.number_input("Presión inicial (P1, atm)", min_value=0.01)
+    T1 = st.number_input("Temperatura inicial (T1, K)", min_value=0.01)
+    T2 = st.number_input("Temperatura final (T2, K)", min_value=0.01)
+    if st.button("Calcular Presión final (P2)"):
+        P2 = (P1 * T2) / T1
+        st.success(f"Presión final P2 = {P2:.3f} atm")
